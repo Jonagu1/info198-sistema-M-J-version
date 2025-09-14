@@ -17,6 +17,7 @@ int solicitarOpcion();
 void crearUsuario(vector<usuario>& usuarios, string archivoUsuarios);
 void listarUsuarios(const vector<usuario>& usuarios);
 void eliminarUsuario(vector<usuario>& usuarios, string archivoUsuarios);
+void creaIndice(vector<usuario>& usuarios)
 
 int main(int argc, char* argv[]) {
     dotenv env(".env");
@@ -33,6 +34,7 @@ int main(int argc, char* argv[]) {
         cout << "2) Listar usuarios" << endl;
         cout << "3) Eliminar usuario" << endl;
         cout << "5) Calcular función f(x) = x^2 + 2x + 8" << endl;
+        cout << "7) Crea índice invertido" << endl;
         cout << endl;
 
         int opcionInt = solicitarOpcion();
@@ -50,7 +52,10 @@ int main(int argc, char* argv[]) {
                 break;
             case 5:
                 calcularFuncion();
-                break;  
+                break;
+            case 7:
+                creaIndice();
+                break;    
             case 0:
                 cout << endl;
                 cout << "¡Hasta pronto!" << endl;
