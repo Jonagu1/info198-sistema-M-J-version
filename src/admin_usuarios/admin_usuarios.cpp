@@ -17,12 +17,14 @@ int solicitarOpcion();
 void crearUsuario(vector<usuario>& usuarios, string archivoUsuarios);
 void listarUsuarios(const vector<usuario>& usuarios);
 void eliminarUsuario(vector<usuario>& usuarios, string archivoUsuarios);
-void creaIndice(vector<usuario>& usuarios)
+void interfazIndice(string path);
 
 int main(int argc, char* argv[]) {
     dotenv env(".env");
     vector<usuario> usuarios;
     string archivoUsuarios = env.get("USER_FILE");
+    string indicePath = env.get("CREATE_INDEX");
+    string librosPath = env.get("BOOKS_FOLDER");
 
     cargarUsuarios(usuarios, archivoUsuarios);
 
@@ -54,7 +56,7 @@ int main(int argc, char* argv[]) {
                 calcularFuncion();
                 break;
             case 7:
-                creaIndice();
+                interfazIndice(librosPath);
                 break;    
             case 0:
                 cout << endl;
@@ -280,4 +282,83 @@ void eliminarUsuario(vector<usuario>& usuarios, string archivoUsuarios) {
     }
 
     esperarTecla();
+}
+
+void interfazIndice(string path){
+    string librosPath = path;
+    string nombreIndice;
+    while (true) {
+        cout << endl;
+        cout << "---= CREA INDICE INVERTIDO =---" << endl;
+        cout << "1) Ingresar nombre del archivo a crear" << endl;
+        cout << "2) Ingresar path de los libros" << endl;
+        cout << "   --Path actual:" <<  librosPath << endl;
+        cout << "3) Ejecutar creacipon de index" << endl;
+    int opcion = solicitarOpcion();
+
+    switch (opcion) {
+        case 1:{
+            cout << endl;
+            cout << "---= NOMBRE DEL ARCHIVO A CREAR =---" << endl;
+            while(true){
+                cout << "Ingresar nombre: '...'.idx";
+                cin >> nombreIndice;
+                cout << endl;
+                if (nombreIndice.length() < 41) {
+                    cout << "Confirma el nombre: " << nombreIndice << "?" <<endl;
+                    cout << "1) Sí"<< endl;
+                    cout << "2) No , volver" << endl;
+                    int opcion2 = solicitarOpcion();
+                    if (opcion2 == 1) {
+                            cout << endl;
+                            break;
+                    }
+                    else if (opcion2 == 2){
+                        cout << "Volver a ingresar nombre (OBLIGATORIO)" << endl;
+                    }
+                    else{
+                        cout << "(ERROR) ¡Opción inválida! NOMBRE BORRADO" << endl;
+                    }
+                    
+                }
+                else {
+                    cout << "(ERROR) Nombre sobre los 40 caracteres. Intente nuevamente." << endl;
+                }
+            }
+            string nombre_salida(nombreIndice  + ".idx");
+            ofstream salida(nombre_salida);
+            
+            break;}    
+        case 2:
+            cout << endl;
+            while(true){
+            
+                cout << "---= INGRESAR PATH A LA CARPETA LIBROS =---" << endl;
+                cin >> librosPath;
+                cout << "Confirma el path: " << librosPath << "?" <<endl;
+                cout << "1) Sí"<< endl;
+                cout << "2) No , volver" << endl;
+                int opcion2 = solicitarOpcion();
+                if (opcion2 == 1) {
+                        cout << endl;
+                        break;
+                }
+                else if (opcion2 == 2){
+                    cout << "Volver a ingresar path (OBLIGATORIO)" << endl;
+                }
+                else{
+                    cout << "(ERROR) ¡Opción inválida! PATH POR DEFAULT" << endl;
+                }
+        }
+            cout << endl;
+            break;
+        case 3:
+            cout << "Creando index..." << endl;
+            indice(string pathCarpeta);
+            return;
+        default:
+            cout << "(ERROR) ¡Opción inválida!" << endl;
+            break;
+        }
+    }
 }
